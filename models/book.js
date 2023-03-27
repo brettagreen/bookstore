@@ -108,29 +108,8 @@ class Book {
     const firstResult = await db.query(
       `SELECT * FROM books WHERE isbn=$1`, [isbn]
     );
-
     const r = firstResult.rows[0];
-    if (data.amazon_url === undefined) {
-      data.amazon_url = r.amazon_url;
-    }
-    if (data.author === undefined) {
-      data.author = r.author;
-    }
-    if (data.language === undefined) {
-      data.language = r.language;
-    }
-    if (data.pages === undefined) {
-      data.pages = r.pages;
-    }
-    if (data.publisher === undefined) {
-      data.publisher = r.publisher;
-    }
-    if (data.title === undefined) {
-      data.title = r.title;
-    }
-    if (data.year === undefined) {
-      data.year = r.year;
-    }
+
     const result = await db.query(
       `UPDATE books SET 
             amazon_url=($1),
@@ -150,13 +129,13 @@ class Book {
                   title,
                   year`,
       [
-        data.amazon_url,
-        data.author,
-        data.language,
-        data.pages,
-        data.publisher,
-        data.title,
-        data.year,
+        data.amazon_url || r.amazon_url,
+        data.author || r.author,
+        data.language || r.language,
+        data.pages || r.pages,
+        data.publisher || r.publisher,
+        data.title || r.title,
+        data.year || r.year,
         isbn
       ]
     );
